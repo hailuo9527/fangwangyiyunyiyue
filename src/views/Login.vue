@@ -23,7 +23,7 @@
 </template>
 
 <script>
-// import axios from "@/lib/axios";
+import axios from "@/lib/axios";
 import { mapMutations } from 'vuex'
 export default {
   name: "Login",
@@ -39,7 +39,7 @@ export default {
   methods: {
     ...mapMutations(['setToken']),
     handleSubmit() {
-      this.axios
+      axios
         .request({
           url: "/login/cellphone",
           method: "post",
