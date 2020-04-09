@@ -23,8 +23,9 @@
 </template>
 
 <script>
-import axios from "@/lib/axios";
-import { mapMutations } from 'vuex'
+// import axios from "@/lib/axios";
+import { mapMutations } from "vuex";
+import { login } from "@/api/login";
 export default {
   name: "Login",
   data() {
@@ -37,19 +38,26 @@ export default {
   },
   computed: {},
   methods: {
-    ...mapMutations(['setToken']),
-    handleSubmit() {
-      axios
-        .request({
-          url: "/login/cellphone",
-          method: "post",
-          data: { phone: this.formInline.user, password: this.formInline.password },
-        })
-        .then((res) => {
-          console.log(res.data);
-          this.setToken(res.data.token)
-          this.$router.push({path: '/home'})
-        });
+    ...mapMutations(["setToken"]),
+    async handleSubmit() {
+      let res = await login({
+        phone: this.formInline.user,
+        password: this.formInline.password,
+      });
+      console.log(res);
+      this.setToken(res.data.token);
+      this.$router.push({ path: "/home" });
+      // this.axios
+      //   .request({
+      //     url: "/login/cellphone",
+      //     method: "post",
+      //     data: { phone: this.formInline.user, password: this.formInline.password },
+      //   })
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     this.setToken(res.data.token)
+      //     this.$router.push({path: '/home'})
+      //   });
     },
   },
 };
