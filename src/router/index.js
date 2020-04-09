@@ -1,12 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import store from "../store";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: Home
   },
@@ -18,11 +19,24 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Login.vue")
   }
 ];
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode: 'history'
 });
 
+router.beforeEach((to, from, next) => {
+  if(!sessionStorage.getItem('token') && to.name !== 'Login') {
+    next({path: '/login'})
+  }else {
+    next()
+  }
+})
 export default router;
